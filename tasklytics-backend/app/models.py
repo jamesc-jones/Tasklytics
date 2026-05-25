@@ -6,7 +6,8 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String, unique=True)
-    password = Column(String)
+
+    hashed_password = Column(String)
 
 class Task(Base):
     __tablename__ = "tasks"
@@ -20,3 +21,4 @@ class Task(Base):
     due_date = Column(DateTime)
 
     user_id = Column(Integer, ForeignKey("users.id"))
+
