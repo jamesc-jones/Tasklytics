@@ -33,7 +33,12 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    return {"message": "User created successfully"}
+    return {"message": "User created successfully",
+            "user": {
+                "id": new_user.id,
+                "email": new_user.email
+                }
+            }
 
 
 @router.post("/login")
@@ -43,7 +48,7 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
     if not db_user or not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
-    token = create_access_token({"sub": db_user.id})
+    token = create_access_token({"sub": str(db_user.id)})
 
     return {
         "access_token": token,

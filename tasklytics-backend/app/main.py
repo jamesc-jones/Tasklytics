@@ -5,7 +5,21 @@ from fastapi import FastAPI
 from app.routes import auth, tasks
 from app.database import Base, engine
 
-app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(
+    title="Tasklytics API",
+    description="Task management backend with JWT auth",
+    version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # This creates the tables
 Base.metadata.create_all(bind=engine)
@@ -17,3 +31,4 @@ app.include_router(tasks.router)
 @app.get("/")
 def root():
     return {"message": "Tasklytics Backend API running"}
+
