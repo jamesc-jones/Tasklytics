@@ -14,4 +14,32 @@ class UserResponse(BaseModel):
     email: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+class TaskCreate(BaseModel):
+    title: str
+    description: str
+    priority: str
+
+
+class TaskUpdate(BaseModel):
+    task_id: int
+    title: str
+    description: str
+    completed: bool
+
+
+class TaskDelete(BaseModel):
+    task_id: int
+
+
+
+
+
+
+
+
+
+
+
+
