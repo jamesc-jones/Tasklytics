@@ -29,8 +29,6 @@ class TaskUpdate(BaseModel):
     completed: bool
 
 
-class TaskDelete(BaseModel):
-    task_id: int
 
 
 

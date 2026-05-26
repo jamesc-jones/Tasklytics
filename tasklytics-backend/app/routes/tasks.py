@@ -5,7 +5,7 @@ from app.database import SessionLocal
 from app import models
 from app.auth_dependencies import get_current_user
 
-from app.schemas import TaskCreate, TaskUpdate, TaskDelete
+from app.schemas import TaskCreate, TaskUpdate
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
@@ -79,12 +79,13 @@ def update_task(
 # Delete a Task
 @router.delete("/{task_id}")
 def delete_task(
-        task_data: TaskDelete,
+        task_id: int,
         db: Session = Depends(get_db),
         current_user=Depends(get_current_user)
 ):
+
     db_task = db.query(models.Task).filter(
-        models.Task.id == task_data.task_id,
+        models.Task.id == task_id,
         models.Task.user_id == current_user.id
     ).first()
 
