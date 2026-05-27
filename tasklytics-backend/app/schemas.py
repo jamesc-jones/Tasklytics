@@ -23,7 +23,6 @@ class TaskCreate(BaseModel):
 
 
 class TaskUpdate(BaseModel):
-    task_id: int
     title: str
     description: str
     completed: bool

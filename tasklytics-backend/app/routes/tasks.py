@@ -53,13 +53,14 @@ def create_task(
 # Update a Task
 @router.put("/{task_id}")
 def update_task(
+        task_id: int,
         task_data: TaskUpdate,
         db: Session = Depends(get_db),
         current_user=Depends(get_current_user)
 ):
 
     db_task = db.query(models.Task).filter(
-        models.Task.id == task_data.task_id,
+        models.Task.id == task_id,
         models.Task.user_id == current_user.id
     ).first()
 
