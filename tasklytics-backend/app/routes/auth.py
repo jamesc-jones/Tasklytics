@@ -1,17 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from app.database import SessionLocal
 from app import models, schemas
 from app.auth_utils import hash_password, verify_password, create_access_token
 
-router = APIRouter(prefix="/auth", tags=["Auth"])
+from app.database import get_db
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.get("/")
 def test_auth():
