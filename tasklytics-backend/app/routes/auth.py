@@ -20,7 +20,8 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
     new_user = models.User(
         email=user.email,
-        hashed_password=hash_password(user.password)
+        hashed_password=hash_password(user.password),
+        role="user"
     )
 
     db.add(new_user)
@@ -42,9 +43,18 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
     if not db_user or not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
-    token = create_access_token({"sub": str(db_user.id)})
+    token = create_access_token({
+        "sub": str(db_user.id),
+        "email": db_user.email,
+        "role": db_user.role
+    })
 
     return {
         "access_token": token,
-        "token_type": "bearer"
+        "token_type": "bearer",
+        "user": {
+            "id": db_user.id,
+            "email": db_user.email,
+            "role": db_user.role
+        }
     }

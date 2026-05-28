@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from fastapi import FastAPI
-from app.routes import auth, tasks
+from app.routes import auth, tasks, admin
 from app.database import Base, engine
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,6 +27,8 @@ Base.metadata.create_all(bind=engine)
 # Register routes
 app.include_router(auth.router)
 app.include_router(tasks.router)
+
+app.include_router(admin.router)
 
 @app.get("/")
 def root():

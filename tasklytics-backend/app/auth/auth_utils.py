@@ -34,9 +34,10 @@ def create_access_token(data: dict):
 
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
-    to_encode.update({"exp": expire,
-                      "type": "access"
-                      })
+    to_encode.update({
+        "exp": expire,
+        "type": "access"
+        })
 
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
@@ -58,7 +59,6 @@ def create_refresh_token(data: dict):
 
 def decode_token(token: str):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
+        return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except JWTError:
         return None
