@@ -17,6 +17,9 @@ def get_tasks(
         current_user=Depends(get_current_user)
 ):
 
+    if current_user.role == "admin":
+        return db.query(models.Task).all()
+
     return db.query(models.Task).filter(
         models.Task.user_id == current_user.id
     ).all()
@@ -53,10 +56,12 @@ def update_task(
         current_user=Depends(get_current_user)
 ):
 
-    db_task = db.query(models.Task).filter(
-        models.Task.id == task_id,
-        models.Task.user_id == current_user.id
-    ).first()
+    query = db.query(models.Task).filter(models.Task.id == task_id)
+
+    if current_user.role != "admin":
+        query = query.filter(models.Task.user_id == current_user.id)
+
+    db_task = query.first()
 
     if not db_task:
         raise HTTPException(status_code=404, detail="Task not found")
@@ -79,10 +84,12 @@ def delete_task(
         current_user=Depends(get_current_user)
 ):
 
-    db_task = db.query(models.Task).filter(
-        models.Task.id == task_id,
-        models.Task.user_id == current_user.id
-    ).first()
+    query = db.query(models.Task).filter(models.Task.id == task_id)
+
+    if current_user.role != "admin":
+        query = query.filter(models.Task.user_id == current_user.id)
+
+    db_task = query.first()
 
     if not db_task:
         raise HTTPException(status_code=404, detail="Task not found")
