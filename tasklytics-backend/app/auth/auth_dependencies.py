@@ -40,6 +40,8 @@ def get_current_user(
     return user
 
 def require_admin(current_user: models.User = Depends(get_current_user)):
+    print("ROLE:", current_user.role)
+
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admins only")
     return current_user
