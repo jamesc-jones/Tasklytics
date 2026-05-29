@@ -32,5 +32,5 @@ app.include_router(admin.router)
 
 @app.get("/")
 def root():
-    return {"message": "Tasklytics Backend API running"}
+    return {"message": "Tasklytics Backend API running!"}
 
