@@ -3,7 +3,16 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 import os
 
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
+
 DATABASE_URL = os.getenv("DATABASE_URL")
+
+# Safety check
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL is not set")
 
 if DATABASE_URL.startswith("sqlite"):
     engine = create_engine(
@@ -13,7 +22,11 @@ if DATABASE_URL.startswith("sqlite"):
 else:
     engine = create_engine(DATABASE_URL)
 
-SessionLocal = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
 
 # This line is critical
 # This initializes the database schema based on defined ORM models
