@@ -5,8 +5,9 @@ import os
 
 from dotenv import load_dotenv
 
-# Load .env file
-load_dotenv()
+# Load .env file locally (not in Docker)
+if os.getenv("ENV") != "docker":
+    load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
