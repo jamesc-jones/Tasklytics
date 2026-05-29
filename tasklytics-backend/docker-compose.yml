@@ -1,4 +1,9 @@
-version: "3.9"
+# Build the project - docker compose up --build
+# Safe shutdown - docker compose down
+# Use the docker compose down -v if:
+#               you don’t care about losing current DB data
+#               you're still in development
+#               you want a clean reset later
 
 services:
 
