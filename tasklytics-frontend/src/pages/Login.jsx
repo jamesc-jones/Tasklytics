@@ -1,8 +1,12 @@
 import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../api/api";
 import { AuthContext } from "../context/AuthContext";
 
+
 export default function Login() {
+    const navigate = useNavigate();
+
     const { loginUser } = useContext(AuthContext);
 
     const [email, setEmail] = useState("");
@@ -13,6 +17,7 @@ export default function Login() {
 
         if (data.access_token) {
             loginUser(data.access_token);
+            navigate("/dashboard");
         } else {
             alert("Login Failed")
         }
@@ -30,6 +35,12 @@ export default function Login() {
              />
 
              <button onClick={handleLogin}>Login</button>
+
+        {/* Link to registration page for users who don't have an account */}
+        <p>
+            Don't have an account?{" "}
+            <Link to="/register">Register here</Link>
+        </p>
         </div>
     );
 }

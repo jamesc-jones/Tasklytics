@@ -1,23 +1,30 @@
-import { useContext } from "react";
-import { AuthProvider, AuthContext } from "./context/AuthContext";
+import { Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 
-function AppContent() {
-  const { token } = useContext(AuthContext);
+import ProtectedRoute from "./components/ProtectedRoute";
 
-  return token ? <Dashboard /> : <Login />;
+export default function App() {
+  return(
+    <Routes>
+      /* Provide a default route */
+      <Route path="/" element={<Navigate to="/login" />} /> 
 
+
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } 
+      />
+    </Routes>
+  );
 }
-
-
-
-function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  )
-}
-
-export default App;

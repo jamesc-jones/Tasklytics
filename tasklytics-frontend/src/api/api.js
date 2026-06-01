@@ -60,3 +60,14 @@ export const updateTask = async (id, task, token) => {
 
     return res.json();
 };
+
+export const deleteTask = async (taskId, token) => {
+    const res = await fetch(`${BASE_URL}/tasks/${taskId}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}` ,
+        },
+    });
+
+    return res.json();
+};
