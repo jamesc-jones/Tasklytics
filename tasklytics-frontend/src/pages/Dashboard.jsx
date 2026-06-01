@@ -10,6 +10,7 @@ export default function Dashboard() {
     const [editingTask, setEditingTask] = useState(null);
     const [editTitle, setEditTitle] = useState("");
     const [editDescription, setEditDescription] = useState("");
+    const [editCompleted, setEditCompleted] = useState(false);
 
     useEffect(() => {
         if(token) {
@@ -42,6 +43,7 @@ export default function Dashboard() {
         setEditingTask(task);
         setEditTitle(task.title);
         setEditDescription(task.description);
+        setEditCompleted(task.completed ?? false);
     };
 
     const handleUpdate = async () => {
@@ -50,11 +52,18 @@ export default function Dashboard() {
             return;
         }
 
+        console.log("Sending update:", {
+            title: editTitle,
+            description: editDescription,
+            completed: editCompleted
+        });
+
         await updateTask(
             editingTask.id,
             {
                 title: editTitle,
-                description: editDescription
+                description: editDescription,
+                completed: editCompleted
             },
             token
         );
@@ -68,6 +77,7 @@ export default function Dashboard() {
         setEditingTask(null);
         setEditTitle("");
         setEditDescription("");
+        setEditCompleted(false);
     };
 
     return(
@@ -95,6 +105,14 @@ export default function Dashboard() {
                         value={editDescription}
                         onChange={(e) => setEditDescription(e.target.value)}
                     />
+                <label>
+                    <input
+                    type="checkbox"
+                    checked={editCompleted}
+                    onChange={(e) => setEditCompleted(e.target.checked)}
+                    />
+                    Completed
+                </label>
                     <button onClick={handleUpdate}>Save</button>
                     <button onClick={cancelEdit}>
                         Cancel
