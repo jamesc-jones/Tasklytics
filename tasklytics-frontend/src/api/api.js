@@ -47,3 +47,16 @@ export const createTask = async (task, token) => {
 
     return res.json()
 }
+
+export const updateTask = async (id, task, token) => {
+    const res = await fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(task),
+    });
+
+    return res.json();
+};
