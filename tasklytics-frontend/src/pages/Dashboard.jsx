@@ -81,7 +81,7 @@ export default function Dashboard() {
     };
 
     return(
-        <div>
+        <div className="notepad">
             <h2>Dashboard</h2>
 
             <button onClick={logoutUser}>Logout</button>

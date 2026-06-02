@@ -24,7 +24,7 @@ export default function Login() {
     };
 
     return (
-        <div>
+        <div className="notepad">
             <h2>Login</h2>
 
             <input placeholder="email" onChange={(e) => setEmail(e.target.value)} />

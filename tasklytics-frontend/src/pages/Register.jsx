@@ -48,7 +48,7 @@ export default function Register() {
 };
 
 return (
-    <div>
+    <div className="notepad">
         <h2>Register</h2>
 
         <input placeholder="email"
