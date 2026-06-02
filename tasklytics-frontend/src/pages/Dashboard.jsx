@@ -3,6 +3,8 @@ import { getTasks, deleteTask, updateTask } from "../api/api";
 import { AuthContext } from "../context/AuthContext";
 import CreateTask from "../components/CreateTask";
 
+import { toast } from "react-toastify";
+
 export default function Dashboard() {
     const { token, logoutUser } = useContext(AuthContext);
     const [tasks, setTasks] = useState([]);
@@ -12,6 +14,8 @@ export default function Dashboard() {
     const [editDescription, setEditDescription] = useState("");
     const [editCompleted, setEditCompleted] = useState(false);
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         if(token) {
             loadTasks();
@@ -19,23 +23,36 @@ export default function Dashboard() {
     }, [token]);
 
     const loadTasks = async () => {
+        setLoading(true);
+
         const res = await getTasks(token);
 
         const tasksData = res?.data || res?.tasks || res;
 
         setTasks(Array.isArray(tasksData) ? tasksData : []);
+
+        setLoading(false);
     };
 
     const handleNewTask = (newTask) => {
         setTasks((prev) => [newTask, ...prev]);
+        toast.success("Task created! ✅");
     };
 
     const handleDelete = async (id) => {
-        await deleteTask(id, token);
-        setTasks((prev) => prev.filter((t) => t.id !== id));
+        try{
+            await deleteTask(id, token);
 
-        if (editingTask?.id === id) {
-            cancelEdit();
+            setTasks((prev) => prev.filter((t) => t.id !== id));
+
+            toast.info("Task Deleted! 🗑️");
+
+            if (editingTask?.id === id) {
+                cancelEdit();
+            }
+        } catch (err) {
+            console.error("Error deleting task", err);
+            toast.error("Failed to delete task! ❌")
         }
     };
 
@@ -48,7 +65,7 @@ export default function Dashboard() {
 
     const handleUpdate = async () => {
         if (!editTitle.trim()) {
-            alert("Title cannot be empty");
+            toast.error("Title cannot be empty ❌");
             return;
         }
 
@@ -58,6 +75,7 @@ export default function Dashboard() {
             completed: editCompleted
         });
 
+        try{
         await updateTask(
             editingTask.id,
             {
@@ -70,8 +88,13 @@ export default function Dashboard() {
 
         setEditingTask(null);
         loadTasks();
-    };
+        toast.success("Task updated! ✏️");
 
+    } catch (err) {
+        console.error("Error updating task:", err);
+        toast.error("Failed to update task. Please try again ❌");
+     }
+    };
 
     const cancelEdit = () => {
         setEditingTask(null);
@@ -79,6 +102,45 @@ export default function Dashboard() {
         setEditDescription("");
         setEditCompleted(false);
     };
+
+    const toggleComplete = async (task) => {
+        try {
+            const newStatus = !task.completed
+
+            await updateTask(
+                task.id,
+                {
+                    ...task,
+                    completed: !task.completed
+                },
+                token
+            );
+
+            // update UI instantly without refetching
+            setTasks((prev) => 
+                prev.map((t) => 
+                    t.id === task.id ? { ...t, completed: newStatus } : t
+                )
+            );
+
+            toast.success(
+                newStatus ? "Task completed! 🎉" : "Marked incomplete"
+            );
+
+        } catch (err) {
+            console.error("Error toggling task:", err);
+            toast.error("Error toggling task! ❌");
+        }
+    };
+
+    if (loading){
+        return (
+            <div className="notepad">
+                <h2>Dashboard</h2>
+                <p>Loading tasks...</p>
+            </div>
+        );
+    }
 
     return(
         <div className="notepad">
@@ -122,13 +184,35 @@ export default function Dashboard() {
 
             <h3>Tasks</h3>
 
-            {tasks.length === 0 && <p>No tasks yet.</p>}
+            {tasks.length === 0 && (
+                    <p>Create your first task!</p>
+                )}
 
             {tasks.map((task) => (
-                <div key={task.id} style={{ border: "1px solid #ccc", margin: 10 }}>
-                    <h4>{task.title}</h4>
-                    <p>{task.description}</p>
+                <div key={task.id} 
+                     style={{ 
+                        border: "1px solid #ccc", 
+                        marginBottom: 15,
+                        padding: 10,
+                        borderRadius: 8
+                         }}
+                    >
+                    <h4 style={{
+                        textDecoration: task.completed ? "line-through" : "none",
+                        opacity: task.completed ? 0.6 : 1
+                    }}>
+                        {task.title}
+                    </h4>
 
+                    <p style={{
+                        textDecoration: task.completed ? "line-through" : "none"
+                    }}>
+                        {task.description}
+                    </p>
+
+                    <button onClick={() => toggleComplete(task)}>
+                        {task.completed ? "Undo" : "Complete"}
+                    </button>
                     <button onClick={() => handleEdit(task)}>
                         Edit
                     </button>
@@ -140,4 +224,4 @@ export default function Dashboard() {
             ))}
         </div>
     );
-}
+  }
