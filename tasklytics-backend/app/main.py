@@ -5,6 +5,8 @@ from fastapi import FastAPI
 from app.routes import auth, tasks, admin, analytics
 from app.database import Base, engine
 
+from app.ai.routes import router as ai_router
+
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -40,6 +42,8 @@ app.include_router(tasks.router)
 app.include_router(admin.router)
 
 app.include_router(analytics.router)
+
+app.include_router(ai_router)
 
 @app.get("/")
 def root():
