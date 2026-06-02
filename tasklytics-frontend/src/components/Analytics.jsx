@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-// import TaskChart from "./TaskChart";
+import TaskChart from "./TaskChart";
 
 export default function Analytics() {
     const { token } = useContext(AuthContext);
@@ -48,7 +48,7 @@ export default function Analytics() {
 
             {/* Chart added */}
             <div style={{ marginTop: "20px" }}>
-              {/* <TaskChart data={data} /> */}  
+              <TaskChart data={data} /> 
             </div>
         </div>
     );
