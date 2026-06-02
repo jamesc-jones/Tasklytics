@@ -5,6 +5,8 @@ import CreateTask from "../components/CreateTask";
 
 import { toast } from "react-toastify";
 
+import Analytics from "../components/Analytics";
+
 export default function Dashboard() {
     const { token, logoutUser } = useContext(AuthContext);
     const [tasks, setTasks] = useState([]);
@@ -148,8 +150,14 @@ export default function Dashboard() {
 
             <button onClick={logoutUser}>Logout</button>
 
+            {/* CREATE TASK */}
             <CreateTask token={token} onTaskCreated={handleNewTask} />
 
+            {/* ANALYTICS */}
+            <Analytics />
+
+
+            {/* EDIT SECTION */}
             {editingTask && (
                 <div style={{
                     border: "1px solid #aaa",
