@@ -3,15 +3,12 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 export default function TaskChart({ data }) {
     if (!data) return null;
 
+    const completed = data.completed_tasks || 0;
+    const total = data.total_tasks || 0;
+
     const chartData = [
-        {
-            name: "Completed",
-            value: data.completed_task || 0
-        },
-        {
-            name: "Remaining",
-            value: (data.total_tasks - data.completed_tasks) || 0
-        }
+        { name: "Completed", value: completed },
+        { name: "Remaining", value: Math.max(total - completed, 0) }
     ];
 
     const COLORS = ["#4ade80", "#f97316"];
