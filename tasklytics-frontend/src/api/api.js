@@ -1,31 +1,9 @@
-const BASE_URL = "http://localhost:8000"
-
-// ----------------- AUTH -------------------
-
-export const register = async (user) => {
-    const res = await fetch(`${BASE_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-    });
-
-    return res.json();
-};
-
-export const login = async(user) => {
-    const res = await fetch(`${BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-    });
-
-    return res.json()
-};
+import { API_BASE } from "./config";
 
 // ---------------- TASK -------------------------
 
 export const getTasks = async (token) => {
-    const res = await fetch(`${BASE_URL}/tasks/`, {
+    const res = await fetch(`${API_BASE}/tasks/`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -36,7 +14,7 @@ export const getTasks = async (token) => {
 
 
 export const createTask = async (task, token) => {
-    const res = await fetch(`${BASE_URL}/tasks/`, {
+    const res = await fetch(`${API_BASE}/tasks/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -49,7 +27,7 @@ export const createTask = async (task, token) => {
 }
 
 export const updateTask = async (id, task, token) => {
-    const res = await fetch(`${BASE_URL}/tasks/${id}`, {
+    const res = await fetch(`${API_BASE}/tasks/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -62,7 +40,7 @@ export const updateTask = async (id, task, token) => {
 };
 
 export const deleteTask = async (taskId, token) => {
-    const res = await fetch(`${BASE_URL}/tasks/${taskId}`, {
+    const res = await fetch(`${API_BASE}/tasks/${taskId}`, {
         method: "DELETE",
         headers: {
             Authorization: `Bearer ${token}` ,
