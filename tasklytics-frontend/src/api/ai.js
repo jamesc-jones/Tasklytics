@@ -10,5 +10,6 @@ export const getInsights = async (tasks, token) => {
         body: JSON.stringify({ tasks }),
     });
 
-    return res.json();
+    const data = await res.json();
+    return data.insight;
 };

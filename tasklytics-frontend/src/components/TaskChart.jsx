@@ -6,6 +6,8 @@ export default function TaskChart({ data }) {
     const completed = data.completed_tasks || 0;
     const total = data.total_tasks || 0;
 
+    if (total === 0) return <p>No data yet</p>;
+
     const chartData = [
         { name: "Completed", value: completed },
         { name: "Remaining", value: Math.max(total - completed, 0) }
@@ -21,9 +23,9 @@ export default function TaskChart({ data }) {
             outerRadius={100}
             label
         >
-            {chartData.map((entry, index) => (
+            {chartData.map((_, index) => (
                 <Cell 
-                key={`cell${index}`}
+                key={index}
                 fill={COLORS[index]} />
             ))}
         </Pie>

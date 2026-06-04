@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { getAnalytics } from "../api/analytics";
 import TaskChart from "./TaskChart";
 
 export default function Analytics() {
@@ -7,13 +8,8 @@ export default function Analytics() {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:8000/tasks/analytics", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        .then((res) => res.json())
-        .then((res) => setData(res.data))
+        getAnalytics(token)
+        .then((res) => setData(res))
         .catch((err) => console.error("Analytics fetch failed", err));
     }, [token]);
 
