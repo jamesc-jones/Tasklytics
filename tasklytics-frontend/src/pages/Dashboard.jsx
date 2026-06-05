@@ -40,7 +40,7 @@ export default function Dashboard() {
             <CreateTask setTasks={setTasks} token={token} />
 
             {/* ANALYTICS */}
-            <Analytics />
+            <Analytics tasks={tasks} />
 
             {/* AI */}
             <AIInsights tasks={tasks} token={token}/>
