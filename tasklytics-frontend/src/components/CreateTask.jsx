@@ -4,6 +4,7 @@ import { createTask } from "../api/api";
 export default function CreateTask({ token, setTasks }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [priority, setPriority] = useState("medium");
 
     const handleCreate = async () => {
         if (!title.trim()) return;
@@ -11,7 +12,7 @@ export default function CreateTask({ token, setTasks }) {
         const task = {
             title,
             description,
-            priority: "medium",
+            priority,
         };
 
         const res = await createTask(task, token);
@@ -21,6 +22,7 @@ export default function CreateTask({ token, setTasks }) {
 
             setTitle("");
             setDescription("");
+            setPriority("medium")
         }
     };
 
@@ -33,11 +35,21 @@ export default function CreateTask({ token, setTasks }) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
             />
-            <input 
+            <textarea 
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             />
+
+            <select 
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+            >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>   
+            </select>
+
             <button onClick={handleCreate}>Add Task</button>
         </div>
     );
