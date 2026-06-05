@@ -9,9 +9,11 @@ export default function Analytics() {
 
     useEffect(() => {
         getAnalytics(token)
-        .then((res) => setData(res))
+        .then((res) => setData(res.data))
         .catch((err) => console.error("Analytics fetch failed", err));
     }, [token]);
+
+    console.log("ANALYTICS RESPOSNSE:", data)
 
     if (!data) return <p>Loading analytics...</p>
 
