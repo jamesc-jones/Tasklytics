@@ -11,7 +11,7 @@ export default function TaskList({ tasks, setTasks, token }) {
     const handleDelete = async (id) => {
         try{
             await deleteTask(id, token);
-            setTasks((prev) => prev.filter((t) => t.id != id));
+            setTasks((prev) => prev.filter((t) => t.id !== id));
             toast.info("Task Deleted! 🗑️");
 
             if (editingTask?.id === id) cancelEdit();
@@ -80,31 +80,33 @@ export default function TaskList({ tasks, setTasks, token }) {
   };
 
   return (
-    <div>
-      {editingTask && (
-        <div style={{ border: "1px solid #aaa", padding: 10 }}>
-          <h3>Edit Task</h3>
+  <div>
+    {editingTask && (
+      <div style={{ border: "1px solid #aaa", padding: 10 }}>
+        <h3>Edit Task</h3>
 
-          <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
-          <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+        <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+        <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
 
-          <label>
-            <input
-              type="checkbox"
-              checked={editCompleted}
-              onChange={(e) => setEditCompleted(e.target.checked)}
-            />
-            Completed
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={editCompleted}
+            onChange={(e) => setEditCompleted(e.target.checked)}
+          />
+          Completed
+        </label>
 
-          <button onClick={handleUpdate}>Save</button>
-          <button onClick={cancelEdit}>Cancel</button>
-        </div>
-      )}
+        <button onClick={handleUpdate}>Save</button>
+        <button onClick={cancelEdit}>Cancel</button>
+      </div>
+    )}
 
-      {tasks.length === 0 && <p>No tasks yet</p>}
-
-      {tasks.map((task) => (
+    {/* SINGLE SAFE RENDER BLOCK */}
+    {!Array.isArray(tasks) || tasks.length === 0 ? (
+      <p>No tasks yet</p>
+    ) : (
+      tasks.map((task) => (
         <div key={task.id} style={{ border: "1px solid #ccc", marginBottom: 10 }}>
           <h4 style={{ textDecoration: task.completed ? "line-through" : "none" }}>
             {task.title}
@@ -119,7 +121,8 @@ export default function TaskList({ tasks, setTasks, token }) {
           <button onClick={() => handleEdit(task)}>Edit</button>
           <button onClick={() => handleDelete(task.id)}>Delete</button>
         </div>
-      ))}
-    </div>
-  );
+      ))
+    )}
+  </div>
+ );
 }

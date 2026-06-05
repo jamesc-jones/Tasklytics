@@ -21,7 +21,11 @@ if DATABASE_URL.startswith("sqlite"):
         connect_args={"check_same_thread": False}
     )
 else:
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,  # checks connection before using it
+        pool_recycle=300,  # refresh connection every 5 minutes
+    )
 
 SessionLocal = sessionmaker(
     autocommit=False,

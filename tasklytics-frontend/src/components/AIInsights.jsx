@@ -8,6 +8,7 @@ export default function AIInsights({ tasks, token }) {
 
     const handleClick = async () => {
         setLoading(true);
+        setInsight("Generating analysis...");
 
         try{
 
@@ -15,12 +16,13 @@ export default function AIInsights({ tasks, token }) {
             const enrichedTasks = tasks.map((t) => ({
                 title: t.title,
                 completed: t.completed,
-                hasDescription: !!t.description,
+                priority: t.priority || "medium",
+                due_date: t.due_date || null
             }));
 
             const result = await getInsights(enrichedTasks, token);
 
-            setInsight(result || "No insights returned.")
+            setInsight(result ?? "No insights returned.")
         } catch (err) {
             console.error(err);
             setInsight("Error generating insights.");
@@ -33,13 +35,11 @@ export default function AIInsights({ tasks, token }) {
         <div style={{ marginTop: 20 }}>
             <h3>AI Assistant</h3>
 
-            <button onClick={handleClick}>
+            <button onClick={handleClick} disabled={loading}>
                 {loading ? "Analyzing..." : "Get AI Insights"}
             </button>
 
-            {loading && <p>Thinking...</p>}
-
-            {insight && (
+            {insight.trim() && (
                 <div 
                     style={{
                         marginTop: 15,

@@ -1,7 +1,7 @@
 import { useState} from "react";
 import { createTask } from "../api/api";
 
-export default function CreateTask({ token, onTaskCreated }) {
+export default function CreateTask({ token, setTasks }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
@@ -17,7 +17,7 @@ export default function CreateTask({ token, onTaskCreated }) {
         const res = await createTask(task, token);
 
         if (res.data){
-            onTaskCreated(res.data);
+            setTasks((prev) => [...prev, res.data]);
 
             setTitle("");
             setDescription("");

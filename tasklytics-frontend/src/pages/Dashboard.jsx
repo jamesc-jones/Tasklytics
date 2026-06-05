@@ -9,12 +9,27 @@ import AIInsights from "../components/AIInsights";
 
 export default function Dashboard() {
     const { token } = useContext(AuthContext);
+
     const [tasks, setTasks] = useState([]);
+
+    // 🔍 DEBUG: runs ONLY when token changes
+    useEffect(() => {
+        console.log("TOKEN UPDATED:", token);
+    }, [token]);
+
 
     // LOAD TASKS
     useEffect(() => {
+
+        console.log("USEEFFECT TOKEN:", token)
+
+        if (!token) return;
+
         getTasks(token)
-        .then((data) => setTasks(data))
+        .then((data) => {
+            console.log("API RESPONSE", data);
+            setTasks(data.data);
+        })
         .catch((err) => console.error(err));
     }, [token]);
 
