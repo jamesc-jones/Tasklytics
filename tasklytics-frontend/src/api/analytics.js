@@ -1,7 +1,7 @@
-import { API_BASE } from "./config";
+import { API_URL } from "./config";
 
 export const getAnalytics = async (token) => {
-    const res = await fetch(`${API_BASE}/tasks/analytics`, {
+    const res = await fetch(`${API_URL}/tasks/analytics`, {
         headers: {
             Authorization: `Bearer ${token}`
         },

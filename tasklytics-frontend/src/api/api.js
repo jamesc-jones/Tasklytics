@@ -1,9 +1,9 @@
-import { API_BASE } from "./config";
+import { API_URL } from "./config";
 
 // ----------------- AUTH -------------------
 
 export const register = async (user) => {
-    const res = await fetch(`${API_BASE}/auth/register`, {
+    const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
@@ -13,7 +13,7 @@ export const register = async (user) => {
 };
 
 export const login = async(user) => {
-    const res = await fetch(`${API_BASE}/auth/login`, {
+    const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
@@ -26,7 +26,7 @@ export const login = async(user) => {
 // ---------------- TASK -------------------------
 
 export const getTasks = async (token) => {
-    const res = await fetch(`${API_BASE}/tasks/`, {
+    const res = await fetch(`${API_URL}/tasks/`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -37,7 +37,7 @@ export const getTasks = async (token) => {
 
 
 export const createTask = async (task, token) => {
-    const res = await fetch(`${API_BASE}/tasks/`, {
+    const res = await fetch(`${API_URL}/tasks/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export const createTask = async (task, token) => {
 }
 
 export const updateTask = async (id, task, token) => {
-    const res = await fetch(`${API_BASE}/tasks/${id}`, {
+    const res = await fetch(`${API_URL}/tasks/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export const updateTask = async (id, task, token) => {
 };
 
 export const deleteTask = async (taskId, token) => {
-    const res = await fetch(`${API_BASE}/tasks/${taskId}`, {
+    const res = await fetch(`${API_URL}/tasks/${taskId}`, {
         method: "DELETE",
         headers: {
             Authorization: `Bearer ${token}` ,

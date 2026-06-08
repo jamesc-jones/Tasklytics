@@ -1,6 +1,11 @@
-frontend:
-  build: ./tasklytics-frontend
-  ports:
-    - "3000:3000"
-  depends_on:
-    - backend  
+
+services:
+  frontend:
+    build: .
+    container_name: tasklytics-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    restart: always    
+     
